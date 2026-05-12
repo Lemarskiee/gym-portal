@@ -36,23 +36,49 @@ class DatabaseSeeder extends Seeder
 
         // TRAINERS
 
-        $trainer1 = Trainer::create([
-            'full_name' => 'John Reyes',
-            'specialty' => 'Weight Training',
-            'phone' => '09171234567'
-        ]);
+        $trainerFirstNames = [
+            'John','Maria','Kevin','Alex','Chris',
+            'Daniel','Sophia','James','Michael','Sarah',
+            'Nathan','Mark','Paolo','Luis','Gabriel',
+            'Andre','Joshua','Carlo','Miguel','Rafael',
+            'Nicole','Angela','Bea','Kim','Janine',
+            'Patricia','Jasmine','Ethan','Jason','Bryan'
+        ];
 
-        $trainer2 = Trainer::create([
-            'full_name' => 'Maria Santos',
-            'specialty' => 'Cardio Fitness',
-            'phone' => '09179876543'
-        ]);
+        $trainerLastNames = [
+            'Reyes','Santos','Cruz','Garcia','Torres',
+            'Navarro','Flores','Ramos','Castillo','Rivera',
+            'Mendoza','Aquino','Diaz','Fernandez','Lopez',
+            'Villanueva','Morales','Ramirez','Bautista','Sy',
+            'Tan','Uy','Go','Chua','Ang',
+            'Lim','Dela Cruz','Alvarez','Gonzales','Sison'
+        ];
 
-        $trainer3 = Trainer::create([
-            'full_name' => 'Kevin Cruz',
-            'specialty' => 'Strength & Conditioning',
-            'phone' => '09175551234'
-        ]);
+        $specialties = [
+            'Weight Training',
+            'Cardio Fitness',
+            'Strength & Conditioning',
+            'Yoga',
+            'CrossFit',
+            'Bodybuilding',
+            'HIIT',
+            'Powerlifting',
+            'Functional Training',
+            'Nutrition Coaching'
+        ];
+
+        $trainers = [];
+
+        for ($i = 0; $i < 30; $i++) {
+
+            $trainer = Trainer::create([
+                'full_name' => $trainerFirstNames[$i] . ' ' . $trainerLastNames[$i],
+                'specialty' => $specialties[array_rand($specialties)],
+                'phone' => '09' . rand(100000000, 999999999)
+            ]);
+
+            $trainers[] = $trainer;
+        }
 
         // MEMBERS
 
@@ -93,7 +119,7 @@ class DatabaseSeeder extends Seeder
             // Trainer Assignment
             TrainerAssignment::create([
                 'member_id' => $member->id,
-                'trainer_id' => rand(1, 3),
+                'trainer_id' => $trainers[array_rand($trainers)]->id,
                 'assigned_from' => now()->subDays(rand(1, 30)),
                 'assigned_to' => now()->addMonths(1)
             ]);
