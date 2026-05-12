@@ -2,63 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MembershipPlan;
 use Illuminate\Http\Request;
 
 class MembershipPlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $plans = MembershipPlan::all();
+
+        return view('plans.index', compact('plans'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('plans.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+            'duration_months' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0'
+        ]);
+
+        MembershipPlan::create([
+            'name' => $request->name,
+            'duration_months' => $request->duration_months,
+            'price' => $request->price,
+        ]);
+
+        return redirect('/plans');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $plan = MembershipPlan::findOrFail($id);
+
+        return view('plans.edit', compact('plan'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $plan = MembershipPlan::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|max:255',
+            'duration_months' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0'
+        ]);
+
+        $plan->update([
+            'name' => $request->name,
+            'duration_months' => $request->duration_months,
+            'price' => $request->price,
+        ]);
+
+        return redirect('/plans');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
-    }
+        $plan = MembershipPlan::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $plan->delete();
+
+        return redirect('/plans');
     }
 }

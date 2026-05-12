@@ -1,17 +1,50 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
+@section('content')
+
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card-stat bg-primary text-white">
+            <h5>Total Members</h5>
+            <h2>{{ $totalMembers }}</h2>
         </div>
     </div>
-</x-app-layout>
+
+    <div class="col-md-3">
+        <div class="card-stat bg-success text-white">
+            <h5>Total Trainers</h5>
+            <h2>{{ $totalTrainers }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card-stat bg-warning text-dark">
+            <h5>Paid Bills</h5>
+            <h2>{{ $paidBills }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card-stat bg-danger text-white">
+            <h5>Unpaid Bills</h5>
+            <h2>{{ $unpaidBills }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-md-12">
+        <div class="card-stat bg-dark text-white">
+            <h4>Total Revenue</h4>
+            <h1>₱{{ number_format($revenue, 2) }}</h1>
+        </div>
+    </div>
+
+</div>
+
+@endsection
