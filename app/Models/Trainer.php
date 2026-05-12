@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MembershipPlan extends Model
+class Trainer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'duration_months',
-        'price'
+        'full_name',
+        'specialty',
+        'phone'
     ];
 
-    public function members()
+    public function assignments()
     {
-        return $this->hasMany(Member::class);
+        return $this->hasMany(TrainerAssignment::class);
     }
 }

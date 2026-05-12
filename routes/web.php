@@ -1,20 +1,18 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MembershipPlanController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\TrainerAssignmentController;
+use App\Http\Controllers\BillingLogController;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+Route::resource('plans', MembershipPlanController::class);
+Route::resource('members', MemberController::class);
+Route::resource('trainers', TrainerController::class);
+Route::resource('assignments', TrainerAssignmentController::class);
+Route::resource('billing', BillingLogController::class);
