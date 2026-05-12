@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
 
             $trainers[] = $trainer;
         }
-
+        // test
         // MEMBERS
 
         $firstNames = [
