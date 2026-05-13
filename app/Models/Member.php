@@ -10,13 +10,19 @@ class Member extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'membership_plan_id',
         'first_name',
         'last_name',
         'email',
         'phone',
-        'start_date'
+        'start_date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function plan()
     {

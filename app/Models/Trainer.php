@@ -10,10 +10,16 @@ class Trainer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'full_name',
         'specialty',
-        'phone'
+        'phone',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function assignments()
     {

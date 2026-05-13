@@ -11,14 +11,10 @@ class DashboardController extends Controller
     public function index()
     {
         $totalMembers = Member::count();
-
         $totalTrainers = Trainer::count();
-
-        $paidBills = BillingLog::where('status', 'paid')->count();
-
+        $paidBills   = BillingLog::where('status', 'paid')->count();
         $unpaidBills = BillingLog::where('status', 'unpaid')->count();
-
-        $revenue = BillingLog::where('status', 'paid')->sum('amount_due');
+        $revenue     = BillingLog::where('status', 'paid')->sum('amount_due');
 
         return view('dashboard', compact(
             'totalMembers',
