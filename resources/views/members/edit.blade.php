@@ -3,7 +3,7 @@
 @section('content')
 
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger shadow-sm">
         <ul class="mb-0">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -12,41 +12,86 @@
     </div>
 @endif
 
-<div class="container-box">
+<div class="container-box shadow-sm"
+     style="max-width: 650px; margin: auto; border-radius: 16px;">
 
-    <h1>Edit Member</h1>
+    <h2 class="text-center fw-bold mb-2">
+        Edit Member
+    </h2>
+
+    <p class="text-center text-muted mb-4">
+        Update member details and membership plan
+    </p>
 
     <form action="/members/{{ $member->id }}" method="POST">
         @csrf
         @method('PUT')
 
-        <input type="text" name="first_name" value="{{ $member->first_name }}" class="form-control">
-        <br><br>
+        {{-- NAME --}}
+        <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <input type="text"
+                       name="first_name"
+                       value="{{ $member->first_name }}"
+                       class="form-control shadow-sm">
+            </div>
 
-        <input type="text" name="last_name" value="{{ $member->last_name }}" class="form-control">
-        <br><br>
+            <div class="col-md-6">
+                <input type="text"
+                       name="last_name"
+                       value="{{ $member->last_name }}"
+                       class="form-control shadow-sm">
+            </div>
+        </div>
 
-        <input type="email" name="email" value="{{ $member->email }}" class="form-control">
-        <br><br>
+        {{-- EMAIL --}}
+        <div class="mb-3">
+            <input type="email"
+                   name="email"
+                   value="{{ $member->email }}"
+                   class="form-control shadow-sm">
+        </div>
 
-        <input type="text" name="phone" value="{{ $member->phone }}" class="form-control">
-        <br><br>
+        {{-- PHONE --}}
+        <div class="mb-3">
+            <input type="text"
+                   name="phone"
+                   value="{{ $member->phone }}"
+                   class="form-control shadow-sm">
+        </div>
 
-        <input type="date" name="start_date" value="{{ $member->start_date }}" class="form-control">
-        <br><br>
+        {{-- START DATE --}}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Start Date</label>
+            <input type="date"
+                   name="start_date"
+                   value="{{ $member->start_date }}"
+                   class="form-control shadow-sm">
+        </div>
 
-        <select name="membership_plan_id" class="form-control">
-            @foreach($plans as $plan)
-                <option value="{{ $plan->id }}"
-                    {{ $member->membership_plan_id == $plan->id ? 'selected' : '' }}>
-                    {{ $plan->name }}
-                </option>
-            @endforeach
-        </select>
+        {{-- PLAN --}}
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Membership Plan</label>
+            <select name="membership_plan_id"
+                    class="form-select shadow-sm">
 
-        <br><br>
+                @foreach($plans as $plan)
+                    <option value="{{ $plan->id }}"
+                        {{ $member->membership_plan_id == $plan->id ? 'selected' : '' }}>
+                        {{ $plan->name }}
+                    </option>
+                @endforeach
 
-        <button type="submit" class="btn btn-warning">Update Member</button>
+            </select>
+        </div>
+
+        {{-- BUTTON --}}
+        <button type="submit"
+                class="btn btn-warning w-100 fw-bold shadow-sm"
+                style="border-radius: 10px;">
+            Update Member
+        </button>
+
     </form>
 
 </div>

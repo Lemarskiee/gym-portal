@@ -3,7 +3,7 @@
 @section('content')
 
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger shadow-sm">
         <ul class="mb-0">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -12,60 +12,78 @@
     </div>
 @endif
 
-<div class="container-box">
+<div class="container-box shadow-sm"
+     style="max-width: 650px; margin: auto; border-radius: 16px;">
 
-    <h1>Edit Assignment</h1>
+    <h2 class="text-center fw-bold mb-2">
+        Edit Assignment
+    </h2>
+
+    <p class="text-center text-muted mb-4">
+        Update trainer–member relationship details
+    </p>
 
     <form action="/assignments/{{ $assignment->id }}" method="POST">
         @csrf
         @method('PUT')
 
-        <label>Member</label>
-        <br>
+        {{-- MEMBER --}}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Member</label>
+            <select name="member_id"
+                    class="form-select shadow-sm">
 
-        <select name="member_id" class="form-control">
-            @foreach($members as $member)
-                <option value="{{ $member->id }}"
-                    {{ $assignment->member_id == $member->id ? 'selected' : '' }}>
-                    {{ $member->first_name }}
-                    {{ $member->last_name }}
-                </option>
-            @endforeach
-        </select>
+                @foreach($members as $member)
+                    <option value="{{ $member->id }}"
+                        {{ $assignment->member_id == $member->id ? 'selected' : '' }}>
+                        {{ $member->first_name }} {{ $member->last_name }}
+                    </option>
+                @endforeach
 
-        <br><br>
+            </select>
+        </div>
 
-        <label>Trainer</label>
-        <br>
+        {{-- TRAINER --}}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Trainer</label>
+            <select name="trainer_id"
+                    class="form-select shadow-sm">
 
-        <select name="trainer_id" class="form-control">
-            @foreach($trainers as $trainer)
-                <option value="{{ $trainer->id }}"
-                    {{ $assignment->trainer_id == $trainer->id ? 'selected' : '' }}>
-                    {{ $trainer->full_name }}
-                </option>
-            @endforeach
-        </select>
+                @foreach($trainers as $trainer)
+                    <option value="{{ $trainer->id }}"
+                        {{ $assignment->trainer_id == $trainer->id ? 'selected' : '' }}>
+                        {{ $trainer->full_name }}
+                    </option>
+                @endforeach
 
-        <br><br>
+            </select>
+        </div>
 
-        <input type="date"
-            name="assigned_from"
-            value="{{ $assignment->assigned_from }}"
-            class="form-control">
+        {{-- FROM DATE --}}
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Assigned From</label>
+            <input type="date"
+                   name="assigned_from"
+                   value="{{ $assignment->assigned_from }}"
+                   class="form-control shadow-sm">
+        </div>
 
-        <br><br>
+        {{-- TO DATE --}}
+        <div class="mb-4">
+            <label class="form-label fw-semibold">Assigned To</label>
+            <input type="date"
+                   name="assigned_to"
+                   value="{{ $assignment->assigned_to }}"
+                   class="form-control shadow-sm">
+        </div>
 
-        <input type="date"
-            name="assigned_to"
-            value="{{ $assignment->assigned_to }}"
-            class="form-control">
-
-        <br><br>
-
-        <button type="submit" class="btn btn-warning">
+        {{-- BUTTON --}}
+        <button type="submit"
+                class="btn btn-warning w-100 fw-bold shadow-sm"
+                style="border-radius: 10px;">
             Update Assignment
         </button>
+
     </form>
 
 </div>
