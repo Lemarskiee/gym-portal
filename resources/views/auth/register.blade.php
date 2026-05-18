@@ -169,7 +169,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="/register">
+                <form method="POST" action="/register" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -233,11 +233,24 @@
 
                     {{-- TRAINER --}}
                     <div id="trainerFields" class="p-3 mb-3 rounded"
-                         style="display:none; background: rgba(0,0,0,0.55);">
+                        style="display:none; background: rgba(0,0,0,0.55);">
 
                         <h6 class="mb-3 fw-bold">Trainer Profile</h6>
 
-                        <input type="text" name="specialty" class="form-control" placeholder="e.g. CrossFit, Yoga">
+                        <div class="mb-3">
+                            <label class="form-label">Specialty</label>
+                            <input type="text" name="specialty" class="form-control"
+                                placeholder="e.g. CrossFit, Yoga" value="{{ old('specialty') }}">
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">Proof of License / Certification</label>
+                            <input type="file" name="license_file" class="form-control"
+                                accept=".pdf,.jpg,.jpeg,.png">
+                            <div class="form-text text-white-50 mt-1">
+                                Accepted: PDF, JPG, PNG — max 4MB. Your application will be reviewed by an admin before you can access the platform.
+                            </div>
+                        </div>
 
                     </div>
 

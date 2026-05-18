@@ -15,21 +15,22 @@
             min-height: 100vh;
         }
 
-        /* DARK OVERLAY (same as login/register) */
-        .bg-overlay {
+        /* FIX: negative z-index so it never blocks modals or any interactive element */
+        body::before {
+            content: '';
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.65);
             z-index: 0;
+            pointer-events: none;
         }
 
-        /* GLASS NAVBAR (matches login card style) */
         .navbar {
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 0, 0, 0.15);
-            z-index: 10;
+            z-index: 1030;
         }
 
         .navbar-brand {
@@ -48,18 +49,21 @@
             transform: translateY(-1px);
         }
 
-        /* GLASS CONTAINERS (match login/register card) */
+        /* Let Bootstrap's own CSS variables control modal layering */
+        :root {
+            --bs-modal-zindex: 9999;
+            --bs-backdrop-zindex: 9998;
+        }
+
+        /* Remove backdrop-filter from container-box — it creates a stacking context that traps modals */
         .container-box {
-            background: rgba(10, 10, 10, 0.75);
+            background: rgba(10, 10, 10, 0.85);
             border-radius: 16px;
             padding: 25px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 0, 0, 0.12);
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
 
-        /* TABLE DARK STYLE */
         table {
             background: rgba(20,20,20,0.8) !important;
             color: #eaeaea !important;
@@ -71,7 +75,6 @@
             background: rgba(0,0,0,0.9) !important;
         }
 
-        /* BUTTON (match gym red theme) */
         .btn-success {
             background: #b30000 !important;
             border: none;
@@ -92,34 +95,40 @@
             color: #fff !important;
         }
 
-        /* page spacing fix */
         .container {
             padding-bottom: 40px;
             position: relative;
             z-index: 2;
         }
 
-        /* fix navbar overlap click issues */
         nav {
             position: relative;
-            z-index: 20;
+            z-index: 1030;
         }
+
+        .modal-dialog {
+            position: relative;
+            z-index: 1056;
+        }
+        .modal.show {
+            display: block !important;
+            z-index: 1055;
+        }
+        .modal-backdrop.show {
+            z-index: 1054;
+        }
+
     </style>
 </head>
 
 <body>
 
-<div class="bg-overlay"></div>
-
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
 
-        <a class="navbar-brand" href="/">
-            WEBFit
-        </a>
+        <a class="navbar-brand" href="/">WEBFit</a>
 
         <div class="d-flex align-items-center gap-3">
-
             @auth
                 @if (auth()->user()->isAdmin())
                     <div class="navbar-nav flex-row gap-3">
@@ -127,33 +136,27 @@
                         <a class="nav-link" href="/plans">Plans</a>
                         <a class="nav-link" href="/members">Members</a>
                         <a class="nav-link" href="/trainers">Trainers</a>
+                        <a class="nav-link" href="/admin/trainer-requests">Trainer Requests</a>
                         <a class="nav-link" href="/assignments">Assignments</a>
                         <a class="nav-link" href="/billing">Billing</a>
+                        <a class="nav-link" href="/admin/applications">Applications</a>
                     </div>
-
                 @elseif (auth()->user()->isMember())
                     <a class="nav-link" href="/member/dashboard">My Dashboard</a>
-
                 @elseif (auth()->user()->isTrainer())
                     <a class="nav-link" href="/trainer/dashboard">My Dashboard</a>
                 @endif
 
-                <span class="text-white small opacity-75">
-                    {{ auth()->user()->name }}
-                </span>
+                <span class="text-white small opacity-75">{{ auth()->user()->name }}</span>
 
                 <form method="POST" action="/logout" class="m-0">
                     @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-light">
-                        Logout
-                    </button>
+                    <button type="submit" class="btn btn-sm btn-outline-light">Logout</button>
                 </form>
-
             @else
                 <a class="nav-link" href="/login">Login</a>
                 <a class="nav-link" href="/register">Register</a>
             @endauth
-
         </div>
     </div>
 </nav>

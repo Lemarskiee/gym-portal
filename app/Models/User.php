@@ -26,27 +26,15 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
 
-    // Role helpers
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
+    public function isAdmin(): bool          { return $this->role === 'admin'; }
+    public function isMember(): bool         { return $this->role === 'member'; }
+    public function isTrainer(): bool        { return $this->role === 'trainer'; }
+    public function isPendingTrainer(): bool { return $this->role === 'pending_trainer'; }
 
-    public function isMember(): bool
-    {
-        return $this->role === 'member';
-    }
-
-    public function isTrainer(): bool
-    {
-        return $this->role === 'trainer';
-    }
-
-    // Relationships
     public function member()
     {
         return $this->hasOne(Member::class);
@@ -55,5 +43,10 @@ class User extends Authenticatable
     public function trainer()
     {
         return $this->hasOne(Trainer::class);
+    }
+
+    public function trainerApplication()
+    {
+        return $this->hasOne(TrainerApplication::class);
     }
 }

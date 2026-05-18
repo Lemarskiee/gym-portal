@@ -18,6 +18,11 @@ class RoleMiddleware
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
+        // Pending trainers can only access /pending
+        if ($user->isPendingTrainer() && !$request->is('pending') && !$request->is('logout')) {
+            return redirect('/pending');
+        }
+
         if (!in_array($user->role, $roles)) {
             abort(403, 'Unauthorized.');
         }

@@ -76,4 +76,39 @@ class TrainerAssignmentController extends Controller
 
         return redirect('/assignments');
     }
+
+    // In TrainerAssignmentController — add this method
+    public function fulfillRequest(Request $request, $requestId)
+    {
+        $request->validate([
+            'trainer_id'    => 'required|exists:trainers,id',
+            'assigned_from' => 'required|date',
+            'assigned_to'   => 'nullable|date|after_or_equal:assigned_from',
+        ]);
+
+        $trainerRequest = \App\Models\TrainerRequest::findOrFail($requestId);
+
+        \App\Models\TrainerAssignment::create([
+            'member_id'     => $trainerRequest->member_id,
+            'trainer_id'    => $request->trainer_id,
+            'assigned_from' => $request->assigned_from,
+            'assigned_to'   => $request->assigned_to,
+        ]);
+
+        $trainerRequest->update(['status' => 'fulfilled']);
+
+        return redirect('/admin/trainer-requests')->with('success', 'Trainer assigned successfully.');
+    }
+
+    public function requests()
+    {
+        $trainerRequests = \App\Models\TrainerRequest::with('member.plan')
+            ->orderByRaw("FIELD(status, 'pending', 'fulfilled', 'cancelled')")
+            ->latest()
+            ->get();
+
+        $trainers = \App\Models\Trainer::all();
+
+        return view('admin.trainer_requests', compact('trainerRequests', 'trainers'));
+    }
 }

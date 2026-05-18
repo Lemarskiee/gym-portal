@@ -38,4 +38,9 @@ class Member extends Model
     {
         return $this->hasMany(BillingLog::class);
     }
+
+    public function trainerRequests()
+    {
+        return $this->hasMany(TrainerRequest::class);
+    }
 }
