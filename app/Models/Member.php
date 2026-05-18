@@ -29,6 +29,11 @@ class Member extends Model
         return $this->belongsTo(MembershipPlan::class, 'membership_plan_id');
     }
 
+    public function membershipPlan()
+    {
+        return $this->belongsTo(MembershipPlan::class, 'membership_plan_id');
+    }
+
     public function trainerAssignments()
     {
         return $this->hasMany(TrainerAssignment::class);

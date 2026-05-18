@@ -3,16 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MembershipPlan extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'name',
-        'duration_months',
-        'price'
+        'description',
+        'price',
+        'duration_days'
     ];
 
     public function members()

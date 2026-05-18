@@ -36,6 +36,7 @@ Route::get('/', function () {
 // ─── Admin Routes ─────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search');
 
     Route::resource('plans',       MembershipPlanController::class);
     Route::resource('members',     MemberController::class);
